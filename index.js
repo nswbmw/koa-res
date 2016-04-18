@@ -1,6 +1,11 @@
 'use strict';
 
-var pkg = require('package');
+var dirname = require('path').dirname;
+var version;
+
+try {
+  version = require(dirname(module.parent.filename) + '/package.json').version;
+} catch(e) {}
 
 module.exports = function (options) {
   options = options || {};
@@ -13,7 +18,7 @@ module.exports = function (options) {
         this.body = {
           ok: true,
           data: data || null,
-          version: pkg.version || '1.0.0',
+          version: options.version || version || '1.0.0',
           now: new Date()
         };
       }
@@ -25,7 +30,7 @@ module.exports = function (options) {
         ok: false,
         message: e.message || e,
         stack: e.stack || e,
-        version: pkg.version || '1.0.0',
+        version: options.version || version || '1.0.0',
         now: new Date()
       };
     }

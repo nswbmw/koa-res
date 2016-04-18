@@ -1,6 +1,6 @@
 {
   "name": "koa-res",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Format koa's respond json.",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,5 @@
     "supertest": "^1.2.0"
   },
   "dependencies": {
-    "package": "^1.0.1"
   }
 }

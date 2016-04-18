@@ -4,6 +4,7 @@ var assert = require('assert');
 var koa = require('koa');
 var request = require('supertest');
 var genres = require('./');
+var pkg = require('./package');
 
 describe('koa-res', function() {
   it('ReferenceError', function (done) {
@@ -22,7 +23,7 @@ describe('koa-res', function() {
         assert.equal(res.body.ok, false);
         assert.equal(res.body.message, 'hi is not defined');
         assert.ok(res.body.stack.match(/hi is not defined/));
-        assert.equal(res.body.version, '1.0.0');
+        assert.equal(res.body.version, pkg.version);
         assert.ok(new Date(res.body.now).toString() !== 'Invalid Date');
 
         done();
@@ -45,7 +46,7 @@ describe('koa-res', function() {
         assert.equal(res.body.ok, false);
         assert.equal(res.body.message, 'wrong paramters');
         assert.ok(res.body.stack.match(/wrong paramters/));
-        assert.equal(res.body.version, '1.0.0');
+        assert.equal(res.body.version, pkg.version);
         assert.ok(new Date(res.body.now).toString() !== 'Invalid Date');
 
         done();
@@ -70,7 +71,7 @@ describe('koa-res', function() {
         
         assert.equal(res.body.ok, true);
         assert.deepEqual(res.body.data, { username: 'nswbmw', gender: 'male' });
-        assert.equal(res.body.version, '1.0.0');
+        assert.equal(res.body.version, pkg.version);
         assert.ok(new Date(res.body.now).toString() !== 'Invalid Date');
 
         done();
