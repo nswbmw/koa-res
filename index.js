@@ -13,6 +13,7 @@ module.exports = function (options) {
     try {
       yield* next;
 
+      var status = this.status;
       var data = this.body;
       if (this.method.toLowerCase !== 'option') {
         this.body = {
@@ -21,6 +22,7 @@ module.exports = function (options) {
           version: options.version || version || '1.0.0',
           now: new Date()
         };
+        this.status = status;
       }
     } catch (e) {
       this.status = e.status || e.statusCode || (e.constructor === TypeError ? 400 : 500);
