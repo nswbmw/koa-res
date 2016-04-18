@@ -22,7 +22,6 @@ describe('koa-res', function() {
         
         assert.equal(res.body.ok, false);
         assert.equal(res.body.message, 'hi is not defined');
-        assert.ok(res.body.stack.match(/hi is not defined/));
         assert.equal(res.body.version, pkg.version);
         assert.ok(new Date(res.body.now).toString() !== 'Invalid Date');
 
@@ -32,7 +31,7 @@ describe('koa-res', function() {
 
   it('TypeError', function (done) {
     var app = koa();
-    app.use(genres());
+    app.use(genres({ debug: true }));
     app.use(function* () {
       throw new TypeError('wrong paramters');
     });

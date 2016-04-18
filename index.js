@@ -23,8 +23,6 @@ module.exports = function (options) {
         };
       }
     } catch (e) {
-      if (options.debug) console.error(e.stack);
-
       this.status = e.status || e.statusCode || (e.constructor === TypeError ? 400 : 500);
       this.body = {
         ok: false,
@@ -33,6 +31,11 @@ module.exports = function (options) {
         version: options.version || version || '1.0.0',
         now: new Date()
       };
+      if (options.debug) {
+        console.error(e.stack);
+      } else {
+        delete this.body.stack;
+      }
     }
   };
 };
