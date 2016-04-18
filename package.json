@@ -1,0 +1,28 @@
+{
+  "name": "koa-res",
+  "version": "1.0.0",
+  "description": "Format koa's respond json.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "nswbmw",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nswbmw/koa-res"
+  },
+  "keywords": [
+    "koa",
+    "res",
+    "format"
+  ],
+  "devDependencies": {
+    "koa": "^1.2.0",
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0"
+  },
+  "dependencies": {
+    "package": "^1.0.1"
+  }
+}
