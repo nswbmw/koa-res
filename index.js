@@ -18,7 +18,7 @@ module.exports = function (options) {
       if (this.method.toLowerCase !== 'option') {
         this.body = {
           ok: true,
-          data: data || null,
+          data: data,
           version: options.version || version || '1.0.0',
           now: new Date()
         };
