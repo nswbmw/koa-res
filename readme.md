@@ -2,27 +2,34 @@
 
 Format koa's respond json.
 
+**NB**: koa@1 -> koa-res@1, koa@2 -> koa-res@2.
+
 ### Install
 
-    npm i koa-res --save
+```sh
+$ npm i koa-res --save
+```
 
 ### Examples
 
-**ReferenceError**
+**Error Response**
+
+```js
+const app = new require('koa')
+const genres = require('koa-res')
+
+app.use(genres({ debug: true }))
+
+app.use(() => {
+  hi()
+})
+
+app.listen(3000)
+```
+
+Output:
 
 ```
-var app = require('koa')();
-var genres = require('koa-res');
-
-app.use(genres());
-
-app.use(function* () {
-  hi();
-});
-
-app.listen(3000);
-
-
 // GET / -> 500
 
 // {
@@ -30,67 +37,46 @@ app.listen(3000);
 //     message: 'hi is not defined',
 //     stack: 'ReferenceError: hi is not defined\n    at Object.<anonymous> (...)',
 //     version: '1.0.0',
-//     now: '2016-04-18T04:23:33.970Z'
+//     now: '2017-10-11T08:47:43.379Z'
 // }
 ```
 
-**TypeError**
+**Normal Response**
 
-```
-var app = require('koa')();
-var genres = require('koa-res');
+```js
+const app = new require('koa')
+const genres = require('koa-res')
 
-app.use(genres());
+app.use(genres())
 
-app.use(function* () {
-  throw new TypeError('wrong paramters');
-});
-
-app.listen(3000);
-
-
-// GET / -> 400
-
-// {
-//     ok: false,
-//     message: 'wrong paramters',
-//     stack: 'TypeError: wrong paramters\n    at Object.<anonymous> (...)',
-//     version: '1.0.0',
-//     now: '2016-04-18T04:26:14.437Z'
-// }
-```
-
-**normal**
-
-```
-var app = require('koa')();
-var genres = require('koa-res');
-
-app.use(genres());
-
-app.use(function* () {
-  this.body = {
+app.use((ctx) => {
+  ctx.body = {
     username: 'nswbmw',
     gender: 'male'
-  };
-});
+  }
+})
 
-app.listen(3000);
+app.listen(3000)
+```
 
+Output:
 
+```
 // GET / -> 200
 
 // {
 //     ok: true,
 //     data: { username: 'nswbmw', gender: 'male' },
 //     version: '1.0.0',
-//     now: '2016-04-18T04:28:26.728Z'
+//     now: '2017-10-11T08:50:12.264Z'
 // }
 ```
 
 ### Test
 
-    npm test
+```sh
+$ npm test
+```
 
 ### License
 

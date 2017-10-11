@@ -1,43 +1,38 @@
-'use strict';
-
-var dirname = require('path').dirname;
-var version;
+const path = require('path')
+let version
 
 try {
-  version = require(dirname(module.parent.filename) + '/package.json').version;
-} catch(e) {}
+  version = require(path.join(path.dirname(module.parent.filename), '/package.json')).version
+} catch (e) {}
 
-module.exports = function (options) {
-  options = options || {};
-  return function *koaRes(next) {
+module.exports = function (options = {}) {
+  return async function koaRes (ctx, next) {
     try {
-      yield* next;
+      await next()
 
-      var status = this.status;
-      var data = this.body;
-      if (this.method.toLowerCase !== 'option') {
-        this.body = {
+      const status = ctx.status
+      const data = ctx.body
+      if (ctx.method.toLowerCase !== 'option') {
+        ctx.body = {
           ok: true,
           data: data,
           version: options.version || version || '1.0.0',
           now: new Date()
-        };
-        this.status = status;
+        }
+        ctx.status = status
       }
     } catch (e) {
-      this.status = e.status || e.statusCode || (e.constructor === TypeError ? 400 : 500);
-      this.body = {
+      ctx.status = e.status || e.statusCode || 500
+      ctx.body = {
         ok: false,
         message: e.message || e,
         stack: e.stack || e,
         version: options.version || version || '1.0.0',
         now: new Date()
-      };
-      if (options.debug) {
-        console.error(e.stack);
-      } else {
-        delete this.body.stack;
+      }
+      if (!options.debug) {
+        delete ctx.body.stack
       }
     }
-  };
-};
+  }
+}

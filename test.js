@@ -1,79 +1,75 @@
-'use strict';
+const assert = require('assert')
+const Koa = require('koa')
+const request = require('supertest')
+const genres = require('./')
+const pkg = require('./package')
 
-var assert = require('assert');
-var koa = require('koa');
-var request = require('supertest');
-var genres = require('./');
-var pkg = require('./package');
-
-describe('koa-res', function() {
-  it('ReferenceError', function (done) {
-    var app = koa();
-    app.use(genres());
-    app.use(function* () {
-      hi();
-    });
+describe('koa-res', () => {
+  it('ReferenceError', (done) => {
+    var app = new Koa()
+    app.use(genres())
+    app.use(() => {
+      hi()
+    })
 
     request(app.callback())
       .get('/')
       .expect(500)
-      .end(function(err, res) {
-        assert.equal(err, null);
-        
-        assert.equal(res.body.ok, false);
-        assert.equal(res.body.message, 'hi is not defined');
-        assert.equal(res.body.version, pkg.version);
-        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date');
+      .end((err, res) => {
+        assert.equal(err, null)
 
-        done();
-      });
-  });
+        assert.equal(res.body.ok, false)
+        assert.equal(res.body.message, 'hi is not defined')
+        assert.equal(res.body.version, pkg.version)
+        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
 
-  it('TypeError', function (done) {
-    var app = koa();
-    app.use(genres({ debug: true }));
-    app.use(function* () {
-      throw new TypeError('wrong paramters');
-    });
+        done()
+      })
+  })
+
+  it('TypeError', (done) => {
+    var app = new Koa()
+    app.use(genres({ debug: true }))
+    app.use(() => {
+      throw new TypeError('wrong paramters')
+    })
 
     request(app.callback())
       .get('/')
-      .expect(400)
-      .end(function(err, res) {        
-        assert.equal(null, err);
-        
-        assert.equal(res.body.ok, false);
-        assert.equal(res.body.message, 'wrong paramters');
-        assert.ok(res.body.stack.match(/wrong paramters/));
-        assert.equal(res.body.version, pkg.version);
-        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date');
+      .expect(500)
+      .end((err, res) => {
+        assert.equal(null, err)
+        assert.equal(res.body.ok, false)
+        assert.equal(res.body.message, 'wrong paramters')
+        assert.ok(res.body.stack.match(/wrong paramters/))
+        assert.equal(res.body.version, pkg.version)
+        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
 
-        done();
-      });
-  });
+        done()
+      })
+  })
 
-  it('normal', function (done) {
-    var app = koa();
-    app.use(genres());
-    app.use(function* () {
-      this.body = {
+  it('normal', (done) => {
+    var app = new Koa()
+    app.use(genres())
+    app.use((ctx) => {
+      ctx.body = {
         username: 'nswbmw',
         gender: 'male'
-      };
-    });
+      }
+    })
 
     request(app.callback())
       .get('/')
       .expect(200)
-      .end(function(err, res) {
-        assert.equal(null, err);
-        
-        assert.equal(res.body.ok, true);
-        assert.deepEqual(res.body.data, { username: 'nswbmw', gender: 'male' });
-        assert.equal(res.body.version, pkg.version);
-        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date');
+      .end((err, res) => {
+        assert.equal(null, err)
+        assert.equal(res.body.ok, true)
+        assert.deepEqual(res.body.data, { username: 'nswbmw', gender: 'male' })
+        assert.equal(res.body.version, pkg.version)
+        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
 
-        done();
-      });
-  });
-});
+        done()
+      })
+  })
+})
