@@ -29,16 +29,16 @@ app.listen(3000)
 
 Output:
 
-```
-// GET / -> 500
+```js
+GET / -> 500
 
-// {
-//     ok: false,
-//     message: 'hi is not defined',
-//     stack: 'ReferenceError: hi is not defined\n    at Object.<anonymous> (...)',
-//     version: '1.0.0',
-//     now: '2017-10-11T08:47:43.379Z'
-// }
+{
+  ok: false,
+  message: 'hi is not defined',
+  stack: 'ReferenceError: hi is not defined\n    at Object.<anonymous> (...)',
+  version: '1.0.0',
+  now: '2017-10-11T08:47:43.379Z'
+}
 ```
 
 **Normal Response**
@@ -61,15 +61,48 @@ app.listen(3000)
 
 Output:
 
-```
-// GET / -> 200
+```js
+GET / -> 200
 
-// {
-//     ok: true,
-//     data: { username: 'nswbmw', gender: 'male' },
-//     version: '1.0.0',
-//     now: '2017-10-11T08:50:12.264Z'
-// }
+{
+  ok: true,
+  data: { username: 'nswbmw', gender: 'male' },
+  version: '1.0.0',
+  now: '2017-10-11T08:50:12.264Z'
+}
+```
+
+### Custom fields
+
+```js
+const app = new require('koa')
+const genres = require('koa-res')
+
+app.use(genres({
+  custom: {
+    name: 'my-api'
+  }  
+}))
+
+app.use((ctx) => {
+  ctx.body = 'This is my api'
+})
+
+app.listen(3000)
+```
+
+Output:
+
+```js
+GET / -> 200
+
+{
+  name: 'my-api',
+  ok: true,
+  data: 'This is my api',
+  version: '1.0.0',
+  now: '2017-10-11T08:50:12.264Z'
+}
 ```
 
 ### Test

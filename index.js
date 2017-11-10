@@ -1,3 +1,4 @@
+const assert = require('assert')
 const path = require('path')
 let version
 
@@ -6,6 +7,9 @@ try {
 } catch (e) {}
 
 module.exports = function (options = {}) {
+  const custom = options.custom || {}
+  assert(custom && typeof custom === 'object' && !Array.isArray(custom), '`custom` should be an object.')
+
   return async function koaRes (ctx, next) {
     try {
       await next()
@@ -19,6 +23,7 @@ module.exports = function (options = {}) {
           version: options.version || version || '1.0.0',
           now: new Date()
         }
+        Object.assign(ctx.body, custom)
         ctx.status = status
       }
     } catch (e) {
@@ -30,6 +35,8 @@ module.exports = function (options = {}) {
         version: options.version || version || '1.0.0',
         now: new Date()
       }
+      Object.assign(ctx.body, custom)
+
       if (!options.debug) {
         delete ctx.body.stack
       }

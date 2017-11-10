@@ -14,7 +14,11 @@ const Koa = require('koa')
 const genres = require('./')
 const app = new Koa()
 
-app.use(genres())
+app.use(genres({
+  custom: {
+    name: 'my-api'
+  }
+}))
 
 app.use((ctx) => {
   ctx.body = {

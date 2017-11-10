@@ -72,4 +72,33 @@ describe('koa-res', () => {
         done()
       })
   })
+
+  it('normal with `custom` fields', (done) => {
+    var app = new Koa()
+    app.use(genres({
+      custom: {
+        name: 'my-api'
+      }
+    }))
+    app.use((ctx) => {
+      ctx.body = {
+        username: 'nswbmw',
+        gender: 'male'
+      }
+    })
+
+    request(app.callback())
+      .get('/')
+      .expect(200)
+      .end((err, res) => {
+        assert.equal(null, err)
+        assert.equal(res.body.ok, true)
+        assert.deepEqual(res.body.data, { username: 'nswbmw', gender: 'male' })
+        assert.equal(res.body.version, pkg.version)
+        assert.equal(res.body.name, 'my-api')
+        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
+
+        done()
+      })
+  })
 })
