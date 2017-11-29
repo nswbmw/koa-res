@@ -2,7 +2,7 @@
 
 Format koa's respond json.
 
-**NB**: koa@1 -> koa-res@1, koa@2 -> koa-res@2.
+**NB**: koa@1 -> koa-res@1, koa@2 -> koa-res@2+.
 
 ### Install
 
@@ -79,9 +79,11 @@ const app = new require('koa')
 const genres = require('koa-res')
 
 app.use(genres({
-  custom: {
-    name: 'my-api'
-  }  
+  custom: (ctx) => {
+    return {
+      name: 'my-api'
+    }
+  }
 }))
 
 app.use((ctx) => {

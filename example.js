@@ -15,8 +15,10 @@ const genres = require('./')
 const app = new Koa()
 
 app.use(genres({
-  custom: {
-    name: 'my-api'
+  custom: (ctx) => {
+    return {
+      name: 'my-api'
+    }
   }
 }))
 

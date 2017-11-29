@@ -73,11 +73,13 @@ describe('koa-res', () => {
       })
   })
 
-  it('normal with `custom` fields', (done) => {
+  it('normal with `custom` function', (done) => {
     var app = new Koa()
     app.use(genres({
-      custom: {
-        name: 'my-api'
+      custom: (ctx) => {
+        return {
+          name: 'my-api'
+        }
       }
     }))
     app.use((ctx) => {
