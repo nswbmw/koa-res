@@ -17,7 +17,7 @@ module.exports = function (options = {}) {
 
       const status = ctx.status
       const data = ctx.body
-      if (ctx.method.toLowerCase !== 'option') {
+      if (ctx.method.toLowerCase !== 'option' && status !== 404) {
         ctx.body = {
           ok: true,
           data: data,
