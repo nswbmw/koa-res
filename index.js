@@ -14,6 +14,9 @@ module.exports = function (options = {}) {
   return async function koaRes (ctx, next) {
     try {
       await next()
+      if (ctx._returnRaw) {
+        return
+      }
 
       const status = ctx.status
       const data = ctx.body

@@ -6,7 +6,7 @@ const pkg = require('./package')
 
 describe('koa-res', () => {
   it('ReferenceError', (done) => {
-    var app = new Koa()
+    const app = new Koa()
     app.use(genres())
     app.use(() => {
       hi()
@@ -28,7 +28,7 @@ describe('koa-res', () => {
   })
 
   it('TypeError', (done) => {
-    var app = new Koa()
+    const app = new Koa()
     app.use(genres({ debug: true }))
     app.use(() => {
       throw new TypeError('wrong paramters')
@@ -50,7 +50,7 @@ describe('koa-res', () => {
   })
 
   it('normal', (done) => {
-    var app = new Koa()
+    const app = new Koa()
     app.use(genres())
     app.use((ctx) => {
       ctx.body = {
@@ -74,7 +74,7 @@ describe('koa-res', () => {
   })
 
   it('normal with `custom` function', (done) => {
-    var app = new Koa()
+    const app = new Koa()
     app.use(genres({
       custom: (ctx) => {
         return {
@@ -99,6 +99,28 @@ describe('koa-res', () => {
         assert.equal(res.body.version, pkg.version)
         assert.equal(res.body.name, 'my-api')
         assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
+
+        done()
+      })
+  })
+
+  it('ctx._returnRaw', (done) => {
+    const app = new Koa()
+    app.use(genres())
+    app.use((ctx) => {
+      ctx._returnRaw = true
+      ctx.body = {
+        username: 'nswbmw',
+        gender: 'male'
+      }
+    })
+
+    request(app.callback())
+      .get('/')
+      .expect(200)
+      .end((err, res) => {
+        assert.equal(null, err)
+        assert.deepEqual(res.body, { username: 'nswbmw', gender: 'male' })
 
         done()
       })

@@ -23,6 +23,8 @@ app.use(genres({
 }))
 
 app.use((ctx) => {
+  ctx._returnRaw = ctx.query._returnRaw
+
   ctx.body = {
     username: 'nswbmw',
     gender: 'male'
