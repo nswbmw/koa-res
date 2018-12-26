@@ -1,6 +1,6 @@
 {
   "name": "koa-res",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Format koa's respond json.",
   "main": "index.js",
   "scripts": {

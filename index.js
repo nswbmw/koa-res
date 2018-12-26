@@ -33,6 +33,8 @@ module.exports = function (options = {}) {
         ctx.status = status
       }
     } catch (e) {
+      ctx.app.emit('error', e, ctx)
+
       ctx.status = e.status || e.statusCode || 500
       ctx.body = {
         ok: false,
