@@ -1,9 +1,3 @@
-const path = require('path')
-let version
-
-try {
-  version = require(path.join(path.dirname(module.parent.filename), '/package.json')).version
-} catch (e) {}
 
 module.exports = function (options = {}) {
   const custom = options.custom
@@ -18,30 +12,26 @@ module.exports = function (options = {}) {
         return
       }
 
-      const status = ctx.status
+      const code = ctx.status
       const data = ctx.body
-      if (ctx.method.toLowerCase !== 'option' && status !== 404) {
+      if (ctx.method.toLowerCase !== 'option' && code !== 404) {
         ctx.body = {
-          ok: true,
-          data: data,
-          version: options.version || version || '1.0.0',
-          now: new Date()
+          code,
+          data: data
         }
         if (custom) {
           Object.assign(ctx.body, custom(ctx))
         }
-        ctx.status = status
+        ctx.status = code
       }
     } catch (e) {
       ctx.app.emit('error', e, ctx)
 
       ctx.status = e.status || e.statusCode || 500
       ctx.body = {
-        ok: false,
+        code: ctx.status,
         message: e.message || e,
-        stack: e.stack || e,
-        version: options.version || version || '1.0.0',
-        now: new Date()
+        stack: e.stack || e
       }
       if (custom) {
         Object.assign(ctx.body, custom(ctx))

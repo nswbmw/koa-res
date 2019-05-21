@@ -2,7 +2,6 @@ const assert = require('assert')
 const Koa = require('koa')
 const request = require('supertest')
 const genres = require('./')
-const pkg = require('./package')
 
 describe('koa-res', () => {
   it('ReferenceError', (done) => {
@@ -18,10 +17,8 @@ describe('koa-res', () => {
       .end((err, res) => {
         assert.equal(err, null)
 
-        assert.equal(res.body.ok, false)
+        assert.equal(res.body.code, 500)
         assert.equal(res.body.message, 'hi is not defined')
-        assert.equal(res.body.version, pkg.version)
-        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
 
         done()
       })
@@ -39,11 +36,9 @@ describe('koa-res', () => {
       .expect(500)
       .end((err, res) => {
         assert.equal(null, err)
-        assert.equal(res.body.ok, false)
+        assert.equal(res.body.code, 500)
         assert.equal(res.body.message, 'wrong paramters')
         assert.ok(res.body.stack.match(/wrong paramters/))
-        assert.equal(res.body.version, pkg.version)
-        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
 
         done()
       })
@@ -64,10 +59,8 @@ describe('koa-res', () => {
       .expect(200)
       .end((err, res) => {
         assert.equal(null, err)
-        assert.equal(res.body.ok, true)
+        assert.equal(res.body.code, 200)
         assert.deepEqual(res.body.data, { username: 'nswbmw', gender: 'male' })
-        assert.equal(res.body.version, pkg.version)
-        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
 
         done()
       })
@@ -94,11 +87,9 @@ describe('koa-res', () => {
       .expect(200)
       .end((err, res) => {
         assert.equal(null, err)
-        assert.equal(res.body.ok, true)
+        assert.equal(res.body.code, 200)
         assert.deepEqual(res.body.data, { username: 'nswbmw', gender: 'male' })
-        assert.equal(res.body.version, pkg.version)
         assert.equal(res.body.name, 'my-api')
-        assert.ok(new Date(res.body.now).toString() !== 'Invalid Date')
 
         done()
       })
@@ -120,6 +111,7 @@ describe('koa-res', () => {
       .expect(200)
       .end((err, res) => {
         assert.equal(null, err)
+        assert.deepEqual(res.code, null)
         assert.deepEqual(res.body, { username: 'nswbmw', gender: 'male' })
 
         done()

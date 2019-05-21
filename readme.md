@@ -2,8 +2,6 @@
 
 Format koa's respond json.
 
-**NB**: koa@1 -> koa-res@1, koa@2 -> koa-res@2+.
-
 ### Install
 
 ```sh
@@ -33,11 +31,9 @@ Output:
 GET / -> 500
 
 {
-  ok: false,
+  code: 500,
   message: 'hi is not defined',
-  stack: 'ReferenceError: hi is not defined\n    at Object.<anonymous> (...)',
-  version: '1.0.0',
-  now: '2017-10-11T08:47:43.379Z'
+  stack: 'ReferenceError: hi is not defined\n    at Object.<anonymous> (...)'
 }
 ```
 
@@ -65,10 +61,8 @@ Output:
 GET / -> 200
 
 {
-  ok: true,
-  data: { username: 'nswbmw', gender: 'male' },
-  version: '1.0.0',
-  now: '2017-10-11T08:50:12.264Z'
+  code: 200,
+  data: { username: 'nswbmw', gender: 'male' }
 }
 ```
 
@@ -100,10 +94,37 @@ GET / -> 200
 
 {
   name: 'my-api',
-  ok: true,
-  data: 'This is my api',
-  version: '1.0.0',
-  now: '2017-10-11T08:50:12.264Z'
+  code: 200,
+  data: 'This is my api'
+}
+```
+
+### ctx.\_returnRaw
+
+```js
+const app = new require('koa')
+const genres = require('koa-res')
+
+app.use(genres())
+app.use((ctx) => {
+  ctx._returnRaw = true
+  ctx.body = {
+    username: 'nswbmw',
+    gender: 'male'
+  }
+})
+
+app.listen(3000)
+```
+
+Output:
+
+```js
+GET / -> 200
+
+{
+  username: 'nswbmw',
+  gender: 'male'
 }
 ```
 
