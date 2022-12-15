@@ -26,7 +26,7 @@ app.use((ctx) => {
   ctx._returnRaw = ctx.query._returnRaw
 
   ctx.body = {
-    username: 'nswbmw',
+    username: 'username',
     gender: 'male'
   }
 })

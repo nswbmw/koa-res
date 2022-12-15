@@ -14,9 +14,9 @@ $ npm i koa-res --save
 
 ```js
 const app = new require('koa')
-const genres = require('koa-res')
+const koaRes = require('koa-res')
 
-app.use(genres({ debug: true }))
+app.use(koaRes({ debug: true }))
 
 app.use(() => {
   hi()
@@ -41,13 +41,13 @@ GET / -> 500
 
 ```js
 const app = new require('koa')
-const genres = require('koa-res')
+const koaRes = require('koa-res')
 
-app.use(genres())
+app.use(koaRes())
 
 app.use((ctx) => {
   ctx.body = {
-    username: 'nswbmw',
+    username: 'username',
     gender: 'male'
   }
 })
@@ -62,7 +62,7 @@ GET / -> 200
 
 {
   code: 200,
-  data: { username: 'nswbmw', gender: 'male' }
+  data: { username: 'username', gender: 'male' }
 }
 ```
 
@@ -70,9 +70,9 @@ GET / -> 200
 
 ```js
 const app = new require('koa')
-const genres = require('koa-res')
+const koaRes = require('koa-res')
 
-app.use(genres({
+app.use(koaRes({
   custom: (ctx) => {
     return {
       name: 'my-api'
@@ -101,15 +101,17 @@ GET / -> 200
 
 ### ctx.\_returnRaw
 
+You must put ctx.\_returnRaw on top of route controller.
+
 ```js
 const app = new require('koa')
-const genres = require('koa-res')
+const koaRes = require('koa-res')
 
-app.use(genres())
+app.use(koaRes())
 app.use((ctx) => {
   ctx._returnRaw = true
   ctx.body = {
-    username: 'nswbmw',
+    username: 'username',
     gender: 'male'
   }
 })
@@ -123,7 +125,7 @@ Output:
 GET / -> 200
 
 {
-  username: 'nswbmw',
+  username: 'username',
   gender: 'male'
 }
 ```

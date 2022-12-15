@@ -49,7 +49,7 @@ describe('koa-res', () => {
     app.use(genres())
     app.use((ctx) => {
       ctx.body = {
-        username: 'nswbmw',
+        username: 'username',
         gender: 'male'
       }
     })
@@ -60,7 +60,7 @@ describe('koa-res', () => {
       .end((err, res) => {
         assert.equal(null, err)
         assert.equal(res.body.code, 200)
-        assert.deepEqual(res.body.data, { username: 'nswbmw', gender: 'male' })
+        assert.deepEqual(res.body.data, { username: 'username', gender: 'male' })
 
         done()
       })
@@ -77,7 +77,7 @@ describe('koa-res', () => {
     }))
     app.use((ctx) => {
       ctx.body = {
-        username: 'nswbmw',
+        username: 'username',
         gender: 'male'
       }
     })
@@ -88,7 +88,7 @@ describe('koa-res', () => {
       .end((err, res) => {
         assert.equal(null, err)
         assert.equal(res.body.code, 200)
-        assert.deepEqual(res.body.data, { username: 'nswbmw', gender: 'male' })
+        assert.deepEqual(res.body.data, { username: 'username', gender: 'male' })
         assert.equal(res.body.name, 'my-api')
 
         done()
@@ -101,7 +101,7 @@ describe('koa-res', () => {
     app.use((ctx) => {
       ctx._returnRaw = true
       ctx.body = {
-        username: 'nswbmw',
+        username: 'username',
         gender: 'male'
       }
     })
@@ -112,7 +112,26 @@ describe('koa-res', () => {
       .end((err, res) => {
         assert.equal(null, err)
         assert.deepEqual(res.code, null)
-        assert.deepEqual(res.body, { username: 'nswbmw', gender: 'male' })
+        assert.deepEqual(res.body, { username: 'username', gender: 'male' })
+
+        done()
+      })
+  })
+
+  it('ctx._returnRaw throw', (done) => {
+    const app = new Koa()
+    app.use(genres())
+    app.use((ctx) => {
+      ctx._returnRaw = true
+      ctx.throw(400, 'test')
+    })
+
+    request(app.callback())
+      .get('/')
+      .expect(400)
+      .end((err, res) => {
+        assert.equal(null, err)
+        assert.equal('test', res.text)
 
         done()
       })
